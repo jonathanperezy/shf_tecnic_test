@@ -1,0 +1,12 @@
+<odoo>
+    <data noupdate="0">
+          <record id="shf_group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="shf_tecnic_test.shf_group_category" />
+          </record>
+          <record id="shf_group_approvator" model="res.groups">
+            <field name="name">Approvator</field>
+            <field name="category_id" ref="shf_tecnic_test.shf_group_category" />
+          </record>
+    </data>
+</odoo>

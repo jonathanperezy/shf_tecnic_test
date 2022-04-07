@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_shf_service_category_group_user,shf.service.category,model_shf_service_category,base.group_user,1,1,1,1
+access_shf_service_guide_group_user,shf.service.guide,model_shf_service_guide,base.group_user,1,1,1,1
+access_shf_service_guide_line_group_user,shf.service.guide.line,model_shf_service_guide_line,base.group_user,1,1,1,1
+access_shf_send_invoice_wizard_group_user,shf.send.invoice.wizard,model_shf_send_invoice_wizard,base.group_user,1,1,1,1

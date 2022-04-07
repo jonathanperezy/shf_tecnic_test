@@ -1,0 +1,173 @@
+<odoo>
+	<data>
+		<!-- explicit list view definition -->
+		<record model="ir.ui.view" id="shf_service_guide_list">
+			<field name="name">shf_tecnic_test list</field>
+			<field name="model">shf.service.guide</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+					<field name="contact_id" />
+					<field name="category_id" />
+					<field name="amount" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="shf_service_guide_form">
+			<field name="name">shf_tecnic_test list</field>
+			<field name="model">shf.service.guide</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button string="Draft" name="action_draft" type="object" states="approved" />
+						<button string="Approve" name="action_approved" type="object" states="draft,completed" confirm="Not editable fields after approve this service. Sure that want continue?" />
+						<button string="Complete" name="action_completed" type="object" states="approved" />
+						<button string="Finish" name="action_finished" type="object" states="completed" />
+						<button string="Cancel" name="action_canceled" type="object" states="draft,approved,completed" />
+                        <button string="Send invoice" name="%(shf_tecnic_test.shf_send_invoice_action_window)d" type="action" states="finished" />
+					</header>
+					<sheet>
+						<header>
+							<field name="state" widget="statusbar" nolabel="1" />
+						</header>
+						<group>
+							<group string="Service Info">
+								<field name="name" />
+								<field name="category_id" attrs="{'readonly':[('state', '!=', 'draft')]}" />
+                                <field name="amount" readonly="1" />
+								<field name="date_guide" attrs="{'readonly':[('state', '!=', 'draft')]}" />
+							</group>
+							<br />
+							<group string="Contact Info">
+								<field name="contact_id" attrs="{'readonly':[('state', '!=', 'draft')]}" />
+							</group>
+						</group>
+						<br />
+						<notebook>
+							<page string="To invoice">
+								<field name="line_ids" attrs="{'readonly':[('state', '!=', 'draft')]}">
+									<tree editable="bottom">
+										<field name="name" />
+										<field name="amount" />
+										<field name="discount" />
+										<field name="total_amount" />
+									</tree>
+									<form>
+										<group>
+											<field name="name" />
+											<field name="service_guide_id" />
+										</group>
+										<br/>
+										<group>
+											<field name="amount" />
+											<field name="discount" />
+										</group>
+										<group>
+											<field name="total_amount" />
+										</group>
+									</form>
+								</field>
+							</page>
+							<page string="Details">
+								<group string="Observations">
+									<field name="observations" nolabel="1" attrs="{'readonly':[('state', '=', 'finished')]}" />
+								</group>
+							</page>
+
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="shf_service_guide_kanban">
+			<field name="name">shf_tecnic_test kanban</field>
+			<field name="model">shf.service.guide</field>
+			<field name="arch" type="xml">
+				<kanban>
+					<field name="name" />
+					<field name="contact_id" />
+					<field name="category_id" />
+					<field name="amount" />
+					<field name="state" />
+					<field name="date_guide" />
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <div class="row">
+                                        <div class="col-md-7 text-info"><h4><field name="name" /></h4></div>  
+                                        <div class="col-md-5 text-muted" style="text-align:right"><h4><field name="state" /></h4></div>
+                                    </div>
+                                    <group>
+                                        <ul>
+                                            <li>
+                                                <strong>Date </strong> <field name="date_guide" />
+                                            </li>
+                                            <li>
+                                                <strong>Contact </strong> <field name="contact_id" />
+                                            </li>
+                                            <li>
+                                                <strong>Amount  </strong> <field name="amount" />
+                                            </li>
+                                            <li>
+                                                <strong>Category</strong> <field name="category_id" />
+                                            </li>
+                                        </ul>
+                                    </group>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+				</kanban>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="shf_service_guide_graph">
+			<field name="name">shf.service.guide.graph</field>
+			<field name="model">shf.service.guide</field>
+			<field name="arch" type="xml">
+				<graph string="Monthly Guide Graph" type="bar">
+                    <field name="date_guide" group="1" type="row" />
+                    <field name="amount" string="Amount" type="measure" />
+                </graph>
+			</field>
+		</record>     
+
+		<record model="ir.ui.view" id="shf_service_guide_search">
+			<field name="name">shf.service.guide.search</field>
+			<field name="model">shf.service.guide</field>
+			<field name="arch" type="xml">
+				<search>
+					<filter name="my_service_guide" string="My guides" domain="[('create_uid', '=', uid)]" />
+                </search>
+			</field>
+		</record>       
+
+		<!-- actions opening views on models -->
+		<record model="ir.actions.act_window" id="shf_service_guide_list_action_window">
+			<field name="name">Service Guide</field>
+			<field name="res_model">shf.service.guide</field>
+			<field name="view_mode">kanban,tree,form</field>
+			<field name="search_view_id" ref="shf_tecnic_test.shf_service_guide_search" />
+			<field name="context">{'search_default_my_service_guide': 1}</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="shf_service_guide_list_action_window2">
+			<field name="name">Service Guide Graph</field>
+			<field name="res_model">shf.service.guide</field>
+			<field name="view_mode">graph</field>
+		</record>
+
+        <!-- Agregar vista search por defecto en mis registros -->
+
+		<!-- menu categories -->
+        <menuitem name="Service Guide" id="shf_service_guide_menu_root" parent="shf_tecnic_test_menu_root" />
+
+		<menuitem name="Guides" id="shf_service_guide_menu" parent="shf_service_guide_menu_root" action="shf_service_guide_list_action_window"/>
+        <menuitem name="Graph" id="shf_service_guide_grap_menu" parent="shf_service_guide_menu_root" action="shf_service_guide_list_action_window2" groups="shf_tecnic_test.shf_group_manager"/>
+
+	</data>
+</odoo>

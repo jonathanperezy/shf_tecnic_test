@@ -1,0 +1,33 @@
+<odoo>
+	<data>
+		<!-- explicit list view definition -->
+		<record model="ir.ui.view" id="shf_send_invoice_form">
+			<field name="name">shf.send.invoice.wizard.form</field>
+			<field name="model">shf.send.invoice.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Confirmation and Extra info to send">
+                    <group>
+						<field name="service_guide_id" readonly="1" options="{'no_open': True}" />
+                        <field name="email" readonly="1" />
+                        <field name="aditional_info" />
+                    </group>
+                    <footer>
+                        <button string="Confirm" name="create" type="object" class="btn-primary" special="save" />
+                        <button string="Cancel" name="cancel" class="btn-secondary" default_focus="1" special="cancel" />
+                    </footer>
+				</form>
+			</field>
+		</record>
+
+
+		<!-- actions opening views on models -->
+		<record model="ir.actions.act_window" id="shf_send_invoice_action_window">
+			<field name="name">shf.send.invoice.wizard.action</field>
+			<field name="res_model">shf.send.invoice.wizard</field>
+			<field name="view_mode">form</field>
+            <field name="view_id" ref="shf_send_invoice_form" />
+            <field name="target">new</field>
+		</record>
+
+	</data>
+</odoo>

@@ -1,0 +1,9 @@
+<odoo>
+    <data noupdate="0">
+          <record id="shf_group_category" model="ir.module.category">
+            <field name="name">Category SHF rols</field>
+            <field name="description">Category for SHF test rols</field>
+            <field name="sequence">02</field>
+          </record>
+    </data>
+</odoo>
