@@ -26,7 +26,7 @@
 						<button string="Complete" name="action_completed" type="object" states="approved" />
 						<button string="Finish" name="action_finished" type="object" states="completed" />
 						<button string="Cancel" name="action_canceled" type="object" states="draft,approved,completed" />
-                        <button string="Send invoice" name="%(shf_tecnic_test.shf_send_invoice_action_window)d" type="action" states="finished" />
+                        <button string="Send invoice" name="%(shf_tecnic_test.shf_send_invoice_action_window)d" type="action" states="completed,finished" />
 					</header>
 					<sheet>
 						<header>

@@ -74,7 +74,7 @@
 
                                             <tr class="bg-dark">
                                                 <th colspan="3">Amount Total</th>
-                                                <th><t t-esc="line.amount" /></th>
+                                                <th><t t-esc="o.amount" /></th>
                                             </tr>
 
                                         </tbody>

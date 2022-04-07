@@ -14,3 +14,4 @@
 
 2. Desarrollo
     Todo el modulo
+    Nota: Para el envio de email de la guia, la guia de servicio debe tener el estatus 'completed,finished'

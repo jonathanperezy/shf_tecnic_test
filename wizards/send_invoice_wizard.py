@@ -18,16 +18,19 @@ class SendInvoiceWizard(models.TransientModel):
         guide = self.env['shf.service.guide'].browse(self._context.get('active_id'))
 
         if template:
-            try:
-                pdf = report._render_qweb_pdf([guide.id], {})[0]
-                attachment = self.env['ir.attachment'].create({
-                    'name': guide.name,
-                    'store_fname': guide.name,
-                    'datas': base64.b64encode(pdf)
-                })
-                template.with_context(data={'attachment_ids': [attachment]}).send_mail(guide.id)
-            except Exception as error:
-                _logger.info(error)
+            # try:
+            pdf = report._render_qweb_pdf([guide.id], {})[0]
+            attachment = self.env['ir.attachment'].create({
+                'name': guide.name,
+                'store_fname': guide.name,
+                'datas': base64.b64encode(pdf)
+            })
+            template.attachment_ids = [(6, 0, [attachment.id])]
+            template.send_mail(guide.id, force_send=True)
+            template.attachment_ids = [(3, attachment.id)]
+            # except Exception as error:
+            #     _logger.info(error)
+
 
         return super(SendInvoiceWizard, self).create(values)
 
