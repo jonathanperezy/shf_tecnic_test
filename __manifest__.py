@@ -32,9 +32,12 @@
         'data/mail_template_data.xml',
         'reports/guide_detail_report.xml',
         'wizards/send_invoice_wizard.xml',
+        'views/assets.xml',
         'views/menu_views.xml',
         'views/service_category_views.xml',
         'views/service_guide_views.xml',
+        'templates/menu_templates.xml',
+        'templates/service_guide_templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
