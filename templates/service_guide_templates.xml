@@ -5,10 +5,16 @@
                 <t t-set="title">Service Guide</t>
                 <div class="container" id="service_guide_container">
                     <div class="row">
-                        <div class="col-md-10 offset-md-1">
+                        <div class="col-md-12">
                             <br/>
                             <h2> Service Guides </h2>
                             <hr/>
+                            <div>
+                                <label>Group By <i class="fa fa-list"></i></label>
+                                <button class="btn btn-default grouper" for="client" row="2">Client</button> |
+                                <button class="btn btn-default grouper" for="date" row="3">Date</button> |
+                                <button class="btn btn-default grouper" for="state" row="4">State</button>
+                            </div>
                             <table id="table_service_guides" class="table table-striped">
                                 <thead class="bg-primary">
                                     <tr>
@@ -33,10 +39,6 @@
                                         <t t-set="total" t-value="total + record.amount" />
                                         <t t-set="index" t-value="index + 1" />
                                     </tr>
-                                    <tr>
-                                        <th colspan="5">Totals</th>
-                                        <th><t t-esc="total" /></th>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -48,87 +50,115 @@
         <template id="service_guide_form">
             <t t-call="website.layout">                
                 <t t-set="title">Service Guide</t>
-                <div class="container">
+                <div class="container" id="service_guide_form">
                 <br/>
-                     <form t-att-action="'/service_guide/post/'+str(record.id)" method="post">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group row form-field">
+                                <div class="col-lg-12 col-md-12 text-left">
+                                    <strong><t t-esc="dict(record.fields_get(allfields=['state'])['state']['selection'])[record.state]"/></strong>
+                                </div>
+                            </div>
 
-                        <div class="form-group row form-field">
-                            <div class="col-lg-12 col-md-12 text-right">
-                                <strong><t t-esc="dict(record.fields_get(allfields=['state'])['state']['selection'])[record.state]"/></strong>
+                            <div class="form-group row form-field">
+                                <label class="col-lg-2 col-md-4 col-form-label" for="name">Code</label>
+                                <div class="col-lg-9 col-md-8">
+                                    <label class="form-control" id="name">
+                                        <t t-esc="record.name" />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row form-field">
+                                <label class="col-lg-2 col-md-4 col-form-label" for="name">Client</label>
+                                <div class="col-lg-9 col-md-8">
+                                    <label class="form-control" id="client">
+                                        <t t-esc="record.contact_id.name" />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row form-field">
+                                <label class="col-lg-2 col-md-4 col-form-label" for="name">Category</label>
+                                <div class="col-lg-9 col-md-8">
+                                    <label class="form-control" id="category">
+                                        <t t-esc="record.category_id.name" />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row form-field">
+                                <label class="col-lg-2 col-md-4 col-form-label" for="name">Date</label>
+                                <div class="col-lg-9 col-md-8">
+                                    <label class="form-control" id="date">
+                                        <t t-esc="record.date_guide" />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-lg-12 col-md-12 col-form-label">Lines</label>
+                            </div>
+
+                            <div id="products_box">
+                                <table class="table table-striped">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th></th>
+                                            <th>Name</th>
+                                            <th>Amount Base</th>
+                                            <th>Discount</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <t t-set="index" t-value="1" />
+                                        <tr t-foreach="record.line_ids" t-as="line">                                        
+                                            <td><t t-esc="index" /></td>
+                                            <td><t t-esc="line.name" /></td>
+                                            <td><t t-esc="line.amount" /></td>
+                                            <td><t t-esc="line.discount" /></td>
+                                            <td><t t-esc="line.total_amount" /></td>
+                                            <t t-set="index" t-value="index + 1" />
+                                        </tr>
+
+                                        <tr>
+                                            <th colspan="4">Amount Total</th>
+                                            <th><t t-esc="record.amount" /></th>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
+                        <div class="col-md-3 mt-3">
+                            <div style="border-left: 1px solid #ccc; margin-top:30px; padding: 8px 0 0 12px;">
+                                <label><strong>Observations</strong></label>
+                                <hr />
+                                <p id="observations">
+                                    <t t-esc="record.observations" />
+                                </p>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-default" id="edit" style="padding: 8px 0 0 12px;">
+                                            Edit <i class="fa fa-pencil"></i>
+                                        </button>
 
-                        <div class="form-group row form-field">
-                            <label class="col-lg-2 col-md-4 col-form-label" for="name">Code</label>
-                            <div class="col-lg-9 col-md-8">
-                                <label class="form-control" id="name">
-                                    <t t-esc="record.name" />
-                                </label>
+                                        <button class="btn btn-default" id="cancel" style="display:none;">
+                                            Cancel <i class="fa fa-times"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <button class="btn btn-success" id="save" t-att-data-record_id="record.id" style="display:none;">
+                                            Save <i class="fa fa-send"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="form-group row form-field">
-                            <label class="col-lg-2 col-md-4 col-form-label" for="name">Client</label>
-                            <div class="col-lg-9 col-md-8">
-                                <label class="form-control" id="client">
-                                    <t t-esc="record.contact_id.name" />
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group row form-field">
-                            <label class="col-lg-2 col-md-4 col-form-label" for="name">Category</label>
-                            <div class="col-lg-9 col-md-8">
-                                <label class="form-control" id="category">
-                                    <t t-esc="record.category_id.name" />
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group row form-field">
-                            <label class="col-lg-2 col-md-4 col-form-label" for="name">Date</label>
-                            <div class="col-lg-9 col-md-8">
-                                <label class="form-control" id="date">
-                                    <t t-esc="record.date_guide" />
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <label class="col-lg-12 col-md-12 col-form-label">Lines</label>
-                        </div>
-
-                        <div id="products_box">
-                            <table class="table table-striped">
-                                <thead class="bg-primary">
-                                    <tr>
-                                        <th></th>
-                                        <th>Name</th>
-                                        <th>Amount Base</th>
-                                        <th>Discount</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <t t-set="index" t-value="1" />
-                                    <tr t-foreach="record.line_ids" t-as="line">                                        
-                                        <td><t t-esc="index" /></td>
-                                        <td><t t-esc="line.name" /></td>
-                                        <td><t t-esc="line.amount" /></td>
-                                        <td><t t-esc="line.discount" /></td>
-                                        <td><t t-esc="line.total_amount" /></td>
-                                        <t t-set="index" t-value="index + 1" />
-                                    </tr>
-
-                                    <tr>
-                                        <th colspan="4">Amount Total</th>
-                                        <th><t t-esc="record.amount" /></th>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </form>
+                    </div> 
                 </div>
             </t>
         </template>
